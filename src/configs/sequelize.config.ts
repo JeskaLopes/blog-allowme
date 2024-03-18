@@ -2,8 +2,8 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export default {
-  development: process.env.DATABASE_URL_DEV,
-  local: {
+  local: process.env.DATABASE_URL_DEV,
+  development: {
     username: process.env.DB_USER_DEV,
     password: process.env.DB_PASS_DEV,
     database: process.env.DB_NAME_DEV,

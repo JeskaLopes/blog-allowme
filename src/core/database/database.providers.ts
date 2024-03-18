@@ -1,11 +1,11 @@
 import { Sequelize } from "sequelize-typescript";
 import { SEQUELIZE } from "../constants";
 import databaseConfig from '../../configs/sequelize.config'
-import { Post } from "src/posts/entities/post.entity";
+import { Posts } from "src/posts/entities/post.entity";
 
 export const databaseProviders = [{
     provide: SEQUELIZE,
-    useFactory: async()=>{
+    useFactory: async () => {
         let config
         switch (process.env.NODE_ENV) {
             case 'development':
@@ -17,7 +17,7 @@ export const databaseProviders = [{
         try {
             const sequelize = new Sequelize(config)
             sequelize.authenticate()
-            sequelize.addModels([Post])
+            sequelize.addModels([Posts])
             await sequelize.sync()
             console.log('Banco conectado com sucesso!')
             return sequelize

@@ -1,4 +1,4 @@
-import { AutoIncrement, Column, DataType, Model, PrimaryKey } from "sequelize-typescript";
+import { AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
 
 export interface PostAttributes{
     id: bigint,
@@ -7,7 +7,8 @@ export interface PostAttributes{
 
 }
 
-export class Post extends Model<PostAttributes> {
+@Table({timestamps: true})
+export class Posts extends Model<PostAttributes> {
     @PrimaryKey 
     @AutoIncrement
     @Column(DataType.INTEGER)
