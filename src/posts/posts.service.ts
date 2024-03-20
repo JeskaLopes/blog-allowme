@@ -3,6 +3,8 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { IPostsRepository, PostsRepository } from './posts.repository';
 import { FindPostQueryDto } from './dto/find-post.dto';
+import { Authors } from 'src/authors/entities/author.entity';
+import { formatAuthorData } from 'src/helpers/normalize-response-author-data';
 
 export class PostsService {
   constructor(
@@ -10,7 +12,7 @@ export class PostsService {
   ) { }
 
   async create(createPostDto: CreatePostDto) {
-    const newPost = await this.postsRepository.create(createPostDto);
+    const newPost = await this.postsRepository.create({ ...createPostDto, authorId: createPostDto.authorId });
     return newPost;
   }
 
@@ -19,9 +21,10 @@ export class PostsService {
     const limit = +queryDto.limit ?? 4
     const order = queryDto.order ?? 'ASC'
 
-    const data: any = await this.postsRepository.findAndCountAll({ limit, offset, order: [['createdAt', order]], raw: true })
+    const data: any = await this.postsRepository.findAndCountAll({ limit, offset, order: [['createdAt', order]], raw: true, include: [{model: Authors }] })
+    const formattedData = formatAuthorData(data.rows)
     return {
-      data: data.rows,
+      data: formattedData,
       totalCount: data.count,
       totalPages: Math.ceil(data.count / limit),
       page: offset,
@@ -30,7 +33,7 @@ export class PostsService {
   }
 
   async findOne(id: number) {
-    const data = await this.postsRepository.findOne({ where: { id } });
+    const data = await this.postsRepository.findOne({ where: { id }, include: [Authors] });
     return {
       data
     }
