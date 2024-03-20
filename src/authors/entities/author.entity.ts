@@ -14,7 +14,7 @@ export class Authors extends Model<AuthorsAttributes> {
     id: bigint
 
     @Column({
-        type: DataType.TEXT("tiny"),
+        type: DataType.TEXT,
         allowNull: false
     })
     name: string
