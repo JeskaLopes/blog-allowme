@@ -22,42 +22,49 @@ export class BaseRepository<T extends Model> implements IBaseRepository<T> {
     this.sequelize = Model.sequelize;
   }
 
-  public findAll(predicate): Promise<T[]> {
-    return this.Model.findAll(predicate);
+  public async findAll(predicate): Promise<T[]> {
+    return await this.Model.findAll(predicate);
   }
 
-  public findAndCountAll(predicate): Promise<T[]> {
-    return this.Model.findAndCountAll(predicate);
+  public async findAndCountAll(predicate): Promise<T[]> {
+    return await this.Model.findAndCountAll(predicate);
   }
 
-  public findOne(predicate): Promise<T> {
-    return this.Model.findOne(predicate);
+  public async findOne(predicate): Promise<T> {
+    return await this.Model.findOne(predicate);
   }
 
   count(predicate): Promise<number> {
     return this.Model.count(predicate);
   }
 
-  public createUnique(data): Promise<T> {
+  public async createUnique(data): Promise<T> {
     delete data.id;
 
-    return this.Model.findOrCreate({ where: data });
+    return await this.Model.findOrCreate({ where: data });
   }
 
-  public create(data): Promise<any> {
+  public async create(data): Promise<any> {
     delete data.id;
-    return this.Model.create(data);
+    return await this.Model.create(data);
   }
 
-  public update<M>(
+  public async update<M>(
     data: Omit<M, 'id'>,
     predicate: { [key: string]: any },
   ): Promise<any> {
-    return this.Model.update(data, predicate);
+    return await this.Model.update(data, predicate);
   }
 
-  public delete(predicate): Promise<any> {
-    return this.findOne(predicate).then((item) => item.destroy());
+  public async delete(predicate): Promise<any> {
+    const item = await this.findOne(predicate);
+    if(!item){
+      return {
+        status: 404,
+        message: "Esta postagem não existe"
+      }
+    } 
+    return item.destroy();
   }
 
   public async findRaw(selectQuery: string): Promise<any> {
