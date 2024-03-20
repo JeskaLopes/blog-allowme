@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
-import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthorsRepository, IAuthorsRepository } from './authors.repository';
 import { Posts } from 'src/posts/entities/post.entity';
 
