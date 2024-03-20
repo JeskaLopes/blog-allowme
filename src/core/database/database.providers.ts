@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize-typescript";
 import { SEQUELIZE } from "../constants";
 import databaseConfig from '../../configs/sequelize.config'
 import { Posts } from "src/posts/entities/post.entity";
+import { Authors } from "src/authors/entities/author.entity";
 
 export const databaseProviders = [{
     provide: SEQUELIZE,
@@ -17,7 +18,7 @@ export const databaseProviders = [{
         try {
             const sequelize = new Sequelize(config)
             sequelize.authenticate()
-            sequelize.addModels([Posts])
+            sequelize.addModels([ Authors, Posts])
             await sequelize.sync()
             console.log('Banco conectado com sucesso!')
             return sequelize

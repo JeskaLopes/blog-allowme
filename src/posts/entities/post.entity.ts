@@ -1,18 +1,26 @@
-import { AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Authors } from "src/authors/entities/author.entity";
 
-export interface PostAttributes{
+export interface PostAttributes {
     id: bigint,
-    title: string, 
-    content: string, 
+    title: string,
+    content: string,
 
 }
 
-@Table({timestamps: true})
+@Table({ timestamps: true })
 export class Posts extends Model<PostAttributes> {
-    @PrimaryKey 
+    @PrimaryKey
     @AutoIncrement
     @Column(DataType.INTEGER)
     id: bigint
+
+    @ForeignKey(() => Authors)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: true
+    })
+    authorId: number;
 
     @Column({
         type: DataType.TEXT,
@@ -25,4 +33,7 @@ export class Posts extends Model<PostAttributes> {
         allowNull: false
     })
     content: string
+
+    @BelongsTo(() => Authors)
+    author: Authors;
 }
