@@ -32,6 +32,11 @@ export class PostsController {
     return this.postsService.findOne(+id);
   }
 
+  @Get('author/:id')
+  findAllByAuthor(@Param('id') id: number) {
+    return this.postsService.findAllByAuthor(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: number, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.update(+id, updatePostDto);
